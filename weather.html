@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서울 날씨</title>
+<style>
+  :root{
+    --bg:#ffffff; --card:#ffffff; --line:#ececec; --ink:#1a1a1a;
+    --sub:#8a8a8a; --up:#e03131; --down:#1c7ed6; --accent:#5a1f1f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:var(--bg); color:var(--ink); padding:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    height:100%; min-height:200px; background:var(--card);
+    border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .head{display:flex; align-items:center; justify-content:space-between}
+  .head .loc{font-size:15px; font-weight:700; letter-spacing:-.2px}
+  .head .loc .dot{color:var(--accent); margin-right:6px}
+  .head .tag{font-size:11px; color:var(--sub)}
+  .now{display:flex; align-items:center; gap:16px}
+  .now .ico{font-size:52px; line-height:1}
+  .now .temp{font-size:44px; font-weight:800; letter-spacing:-1.5px}
+  .now .meta{display:flex; flex-direction:column; gap:3px}
+  .now .desc{font-size:15px; font-weight:600}
+  .now .hum{font-size:12px; color:var(--sub)}
+  .days{display:flex; flex-direction:column; gap:8px; margin-top:2px}
+  .day{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:9px 12px; background:#fafafa; border-radius:10px; font-size:13px;
+  }
+  .day .l{display:flex; align-items:center; gap:9px}
+  .day .l .lbl{font-weight:700; width:34px}
+  .day .l .di{font-size:18px}
+  .day .l .dd{color:var(--sub); font-size:12px}
+  .day .r{display:flex; align-items:center; gap:10px}
+  .day .r .rain{color:var(--down); font-size:12px; font-weight:600}
+  .day .r .mm{font-variant-numeric:tabular-nums}
+  .day .r .mm .mx{color:var(--up); font-weight:700}
+  .day .r .mm .mn{color:var(--sub)}
+  .foot{margin-top:auto; font-size:10.5px; color:var(--sub); text-align:right}
+  .err{font-size:13px; color:var(--sub); text-align:center; padding:20px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="head">
+      <div class="loc"><span class="dot">●</span>서울 · 날씨</div>
+      <div class="tag" id="tag">불러오는 중…</div>
+    </div>
+    <div id="body">
+      <div class="err">날씨 정보를 불러오는 중입니다…</div>
+    </div>
+    <div class="foot">Open-Meteo 실시간</div>
+  </div>
+
+<script>
+const WMO = {
+  0:["맑음","☀️"],1:["대체로 맑음","🌤️"],2:["구름 조금","⛅"],3:["흐림","☁️"],
+  45:["안개","🌫️"],48:["짙은 안개","🌫️"],
+  51:["약한 이슬비","🌦️"],53:["이슬비","🌦️"],55:["강한 이슬비","🌧️"],
+  56:["어는 이슬비","🌧️"],57:["어는 이슬비","🌧️"],
+  61:["약한 비","🌦️"],63:["비","🌧️"],65:["강한 비","🌧️"],
+  66:["어는 비","🌧️"],67:["어는 비","🌧️"],
+  71:["약한 눈","🌨️"],73:["눈","🌨️"],75:["강한 눈","❄️"],77:["싸락눈","🌨️"],
+  80:["약한 소나기","🌦️"],81:["소나기","🌧️"],82:["강한 소나기","⛈️"],
+  85:["소나기눈","🌨️"],86:["소나기눈","❄️"],
+  95:["뇌우","⛈️"],96:["뇌우/우박","⛈️"],99:["강한 뇌우","⛈️"]
+};
+function wmo(c){return WMO[c]||["-","🌡️"];}
+function pad(n){return String(n).padStart(2,"0");}
+
+async function load(){
+  const url="https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780"
+    +"&current=temperature_2m,relative_humidity_2m,weather_code"
+    +"&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code"
+    +"&timezone=Asia%2FSeoul&forecast_days=2";
+  try{
+    const r=await fetch(url);
+    const d=await r.json();
+    const cur=d.current, dl=d.daily;
+    const [cdesc,cico]=wmo(cur.weather_code);
+    const now=new Date();
+    document.getElementById("tag").textContent=pad(now.getHours())+":"+pad(now.getMinutes())+" 기준";
+
+    const dayLabels=["오늘","내일"];
+    let daysHtml="";
+    for(let i=0;i<dl.time.length && i<2;i++){
+      const [dd,di]=wmo(dl.weather_code[i]);
+      daysHtml+=`<div class="day">
+        <div class="l"><span class="lbl">${dayLabels[i]||dl.time[i].slice(5)}</span>
+          <span class="di">${di}</span><span class="dd">${dd}</span></div>
+        <div class="r">
+          <span class="rain">☔ ${dl.precipitation_probability_max[i]}%</span>
+          <span class="mm"><span class="mx">${Math.round(dl.temperature_2m_max[i])}°</span>
+            <span style="color:#ccc"> / </span><span class="mn">${Math.round(dl.temperature_2m_min[i])}°</span></span>
+        </div></div>`;
+    }
+
+    document.getElementById("body").innerHTML=`
+      <div class="now">
+        <div class="ico">${cico}</div>
+        <div class="temp">${Math.round(cur.temperature_2m)}°</div>
+        <div class="meta">
+          <div class="desc">${cdesc}</div>
+          <div class="hum">습도 ${cur.relative_humidity_2m}%</div>
+        </div>
+      </div>
+      <div class="days">${daysHtml}</div>`;
+  }catch(e){
+    document.getElementById("body").innerHTML=`<div class="err">날씨 정보를 불러오지 못했습니다.<br>잠시 후 자동으로 다시 시도합니다.</div>`;
+  }
+}
+load();
+setInterval(load, 10*60*1000); // 10분마다 갱신
+</script>
+</body>
+</html>
