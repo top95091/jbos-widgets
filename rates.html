@@ -1,109 +1,109 @@
 <!DOCTYPE html>
 <html lang="ko">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>금리</title>
- <style>
-  :root{--up:#e03131;--down:#1c7ed6;--text:#131722;--sub:#787b86;--border:#eceef1;--bg:#ffffff;}
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Trebuchet MS",Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);}
-  .card{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--bg);}
-  .card-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);}
-  .card-title{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--text);}
-  .dot{width:7px;height:7px;border-radius:50%;background:#7b1fa2;display:inline-block;}
-  .badge{font-size:11px;color:var(--sub);}
-  .tv-wrap{height:300px;width:100%;}
-  .kr-section{border-top:1px solid var(--border);}
-  .kr-header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px 4px 14px;}
-  .kr-header-title{font-size:11px;color:var(--sub);font-weight:600;}
-  .kr-header-badge{font-size:10px;color:#9c6b00;background:#fff4e0;border:1px solid #ffe3ad;border-radius:10px;padding:1px 8px;}
-  .kr-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-top:1px solid var(--border);}
-  .kr-row:first-of-type{border-top:none;}
-  .kr-name{font-size:13px;font-weight:600;color:var(--text);}
-  .kr-desc{font-size:11px;color:var(--sub);margin-top:1px;}
-  .kr-value{text-align:right;}
-  .kr-value .num{font-size:14px;font-weight:700;color:var(--text);}
-  .kr-value .date{font-size:10px;color:var(--sub);margin-top:1px;}
-  .kr-footer{padding:6px 14px 10px 14px;font-size:10px;color:var(--sub);}
-  .kr-footer a{color:var(--down);text-decoration:none;}
-  </style>
- </head>
- <body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금리</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    background:#fff; padding:14px;}
+  .card{height:100%; min-height:220px; background:#fff; border:1px solid #ececec;
+    border-radius:16px; padding:14px 16px 8px; display:flex; flex-direction:column;}
+  .title{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;}
+  .title .t{font-size:15px; font-weight:700; letter-spacing:-.2px; color:#1a1a1a;}
+  .title .t .dot{color:#5a1f1f; margin-right:6px;}
+  .title .tag{font-size:11px; color:#8a8a8a;}
+  .tv{flex:1; min-height:260px;}
+  .tradingview-widget-container,.tradingview-widget-container__widget{height:100%; width:100%;}
+  .kr{border-top:1px solid #f0f0f0; margin-top:8px; padding-top:8px;}
+  .kr-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:2px;}
+  .kr-head .lbl{font-size:11px; font-weight:600; color:#8a8a8a;}
+  .kr-head .badge{font-size:10px; color:#9c6b00; background:#fff4e0; border:1px solid #ffe3ad;
+    border-radius:10px; padding:1px 8px;}
+  .kr-row{display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-top:1px solid #f6f6f6;}
+  .kr-row .name{font-size:13px; font-weight:600; color:#1a1a1a;}
+  .kr-row .desc{font-size:11px; color:#8a8a8a; margin-top:1px;}
+  .kr-row .val{text-align:right;}
+  .kr-row .num{font-size:14px; font-weight:700; color:#1a1a1a;}
+  .kr-row .date{font-size:10px; color:#8a8a8a; margin-top:1px;}
+  .kr-foot{font-size:10px; color:#a0a0a0; padding:6px 0 4px; line-height:1.5;}
+  .kr-foot a{color:#1c7ed6; text-decoration:none;}
+</style>
+</head>
+<body>
   <div class="card">
-   <div class="card-header">
-    <div class="card-title"><span class="dot"></span>span>금리 (기준금리·국채)</div>div>
-    <div class="badge">실시간 · TradingView</div>div>
-   </div>div>
-   <div class="tv-wrap">
-    <div class="tradingview-widget-container" style="height:100%;width:100%">
-     <div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>div>
-     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-      {
-       "colorTheme": "light",
-        "dateRange": "12M",
-        "showChart": true,
-        "locale": "kr",
-        "largeChartUrl": "",
-        "isTransparent": false,
-        "showSymbolLogo": true,
-        "showFloatingTooltip": false,
-        "width": "100%",
-        "height": "100%",
-        "plotLineColorGrowing": "rgba(224, 49, 49, 1)",
-        "plotLineColorFalling": "rgba(28, 126, 214, 1)",
-        "gridLineColor": "rgba(240, 243, 250, 0)",
-        "scaleFontColor": "rgba(19, 23, 34, 1)",
-        "belowLineFillColorGrowing": "rgba(224, 49, 49, 0.12)",
-        "belowLineFillColorFalling": "rgba(28, 126, 214, 0.12)",
-        "belowLineFillColorGrowingBottom": "rgba(224, 49, 49, 0)",
-        "belowLineFillColorFallingBottom": "rgba(28, 126, 214, 0)",
-        "symbolActiveColor": "rgba(224, 49, 49, 0.12)",
-        "tabs": [
+    <div class="title"><div class="t"><span class="dot">●</span>금리 (기준금리·국채)</div><div class="tag">실시간 · TradingView</div></div>
+    <div class="tv">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
         {
-         "title": "미국",
-         "symbols": [
-          { "s": "FRED:DFF", "d": "미국 기준금리(FF)" },
-          { "s": "FRED:DGS10", "d": "미국 10년물 국채" }
-          ],
-         "originalTitle": "미국"
+          "colorTheme": "light",
+          "dateRange": "12M",
+          "showChart": true,
+          "locale": "kr",
+          "largeChartUrl": "",
+          "isTransparent": true,
+          "showSymbolLogo": true,
+          "showFloatingTooltip": true,
+          "width": "100%",
+          "height": "100%",
+          "plotLineColorGrowing": "rgba(224,49,49,1)",
+          "plotLineColorFalling": "rgba(28,126,214,1)",
+          "gridLineColor": "rgba(240,240,240,1)",
+          "scaleFontColor": "rgba(120,120,120,1)",
+          "belowLineFillColorGrowing": "rgba(224,49,49,0.08)",
+          "belowLineFillColorFalling": "rgba(28,126,214,0.08)",
+          "belowLineFillColorGrowingBottom": "rgba(224,49,49,0)",
+          "belowLineFillColorFallingBottom": "rgba(28,126,214,0)",
+          "symbolActiveColor": "rgba(90,31,31,0.08)",
+          "tabs": [
+            {
+              "title": "미국",
+              "symbols": [
+                {"s": "FRED:DFF", "d": "미국 기준금리 (FF)"},
+                {"s": "FRED:DGS10", "d": "미국 국채 10년"},
+                {"s": "FRED:DGS2", "d": "미국 국채 2년"}
+              ]
+            }
+          ]
         }
-        ]
-      }
-     </script>
-    </div>div>
-   </div>div>
-   <div class="kr-section">
-    <div class="kr-header">
-     <div class="kr-header-title">한국 (수동 업데이트)</div>div>
-     <div class="kr-header-badge">MANUAL</div>div>
-    </div>div>
-    <div class="kr-row">
-     <div>
-      <div class="kr-name">한국 기준금리</div>
-      <div class="kr-desc">한국은행 base rate</div>
-     </div>
-     <div class="kr-value">
-      <div class="num">2.75%</div>
-      <div class="date">2026.07.16 인상</div>
-     </div>
+        </script>
+      </div>
     </div>
-    <div class="kr-row">
-     <div>
-      <div class="kr-name">국고채 10년</div>
-      <div class="kr-desc">KR 10Y yield</div>
-     </div>
-     <div class="kr-value">
-      <div class="num">4.14%</div>
-      <div class="date">2026.08.05 기준</div>
-     </div>
+    <div class="kr">
+      <div class="kr-head">
+        <div class="lbl">한국</div>
+        <div class="badge">수동 업데이트</div>
+      </div>
+      <div class="kr-row">
+        <div>
+          <div class="name">한국 기준금리</div>
+          <div class="desc">한국은행 base rate</div>
+        </div>
+        <div class="val">
+          <div class="num">2.75%</div>
+          <div class="date">2026.07.16 인상</div>
+        </div>
+      </div>
+      <div class="kr-row">
+        <div>
+          <div class="name">국고채 10년</div>
+          <div class="desc">KR 10Y yield</div>
+        </div>
+        <div class="val">
+          <div class="num">4.14%</div>
+          <div class="date">2026.08.05 기준</div>
+        </div>
+      </div>
+      <div class="kr-foot">
+        TradingView 무료 임베드가 KR 금리 데이터를 제공하지 않아 수동 입력됩니다.
+        최신값 확인 : <a href="https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&amp;menuNo=200643" target="_blank" rel="noopener">한국은행 기준금리</a>
+        · <a href="https://tradingeconomics.com/south-korea/government-bond-yield" target="_blank" rel="noopener">국고채 10년</a>
+      </div>
     </div>
-    <div class="kr-footer">
-     한국 금리는 TradingView 무료 임베드가 KR 데이터를 제한해 수동 입력됩니다. 최신값 확인:
-     <a href="https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643" target="_blank">한국은행 기준금리</a>a> ·
-     <a href="https://tradingeconomics.com/south-korea/government-bond-yield" target="_blank">국고채10년</a>a>
-    </div>
-   </div>
   </div>
- </body>
+</body>
 </html>
